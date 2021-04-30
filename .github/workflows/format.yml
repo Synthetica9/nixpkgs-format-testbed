@@ -19,6 +19,7 @@ jobs:
 
       - name: Format
         run: |
+          set -euxo pipefail
           nix-env -f 'https://github.com/nixos/nixpkgs/archive/nixpkgs-unstable.tar.gz' -iA nixpkgs-fmt
           mapfile -d ',' -t files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
           for added_modified_file in "${files[@]}"; do
