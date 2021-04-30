@@ -55,7 +55,7 @@ jobs:
           gh pr checkout "$PULL_REQUEST"
 
           # https://stackoverflow.com/questions/34257833/git-filter-branch-get-only-changed-files
-          git filter-branch --tree-filter 'nixpkgs-fmt $(\
+          git filter-branch --tree-filter 'source $GITHUB_ENV; nixpkgs-fmt $(\
             git show $CURRENT_BASE..$PR_BRANCH --name-status | egrep ^[AM] |\
             grep .nix | cut -f2)' -- $CURRENT_BASE..$PR_BRANCH
 
