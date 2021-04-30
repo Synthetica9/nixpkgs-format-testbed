@@ -42,6 +42,7 @@ jobs:
       - name: format pull request
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FILTER_BRANCH_SQUELCH_WARNING: "1"
         run: |
           set -euxo pipefail
 
