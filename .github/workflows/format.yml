@@ -9,11 +9,24 @@ jobs:
       - uses: actions/checkout@v2
         with:
           ref: ${{ github.head_ref }}
+
+      - id: files
+        uses: jitterbit/get-changed-files@v1
+        with:
+          format: csv
+
       - uses: cachix/install-nix-action@v13
+
       - name: Format
-        run: |
+      - run: |
           NIX_PATH=nixpkgs=https://github.com/nixos/nixpkgs/archive/nixpkgs-unstable.tar.gz \
-            nix-shell -p nixpkgs-fmt --run nixpkgs-fmt
+            nix-env -i nixpkgs-fmt
+          mapfile -d ',' -t files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
+          for added_modified_file in "${files[@]}"; do
+            grep ".nix" <<< file || continue
+            nixpkgs-fmt "${file}"
+          done
+
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4.1.2
         with:
