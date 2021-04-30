@@ -54,11 +54,11 @@ jobs:
 
           gh pr checkout "$PULL_REQUEST"
 
-          export COMMITS=$CURRENT_BASE..$PR_BRANCH
           # https://stackoverflow.com/questions/34257833/git-filter-branch-get-only-changed-files
-          git filter-branch --tree-filter 'nixpkgs-fmt $(\
-            git show $COMMITS --name-status | egrep ^[AM] |\
-            grep .nix | cut -f2)' -- $COMMITS
+          export CHANGED_FILES="$(\
+            git show $CURRENT_BASE..$PR_BRANCH --name-status | egrep ^[AM] | \
+            grep .nix | cut -f2)"
+          git filter-branch --tree-filter "nixpkgs-fmt $CHANGED_FILES" -- $CURRENT_BASE..$PR_BRANCH
 
           git push --force
 
