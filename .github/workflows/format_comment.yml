@@ -60,7 +60,7 @@ jobs:
             | sort | uniq > /tmp/changed_files
           xxd /tmp/changed_files
 
-          git filter-branch --tree-filter "cat /tmp/changed_files | perl -ne 'chomp(); if (-e $_) {print \"$_\\n\"}' | xargs -d '\\n' -- nixpkgs-fmt" -- $CURRENT_BASE..$PR_BRANCH
+          git filter-branch --tree-filter 'cat /tmp/changed_files | perl -ne \'chomp(); if (-e $_) {print "$_\n"}\' | xargs -d "\n" -- nixpkgs-fmt' -- $CURRENT_BASE..$PR_BRANCH
 
           git push --force
 
