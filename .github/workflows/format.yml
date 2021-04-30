@@ -12,7 +12,8 @@ jobs:
       - uses: cachix/install-nix-action@v13
       - name: Format
         run: |
-          nix run nixpkgs-fmt
+          NIX_PATH=nixpkgs=https://github.com/nixos/nixpkgs/archive/nixpkgs-unstable.tar.gz \
+            nix-shell -p nixpkgs-fmt --run nixpkgs-fmt
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4.1.2
         with:
