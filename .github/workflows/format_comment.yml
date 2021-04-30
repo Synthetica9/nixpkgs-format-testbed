@@ -57,10 +57,10 @@ jobs:
           # https://stackoverflow.com/questions/34257833/git-filter-branch-get-only-changed-files
           git show $CURRENT_BASE..$PR_BRANCH --name-status \
             | egrep ^[AM] | grep .nix | cut -f2 \
-            | sort | uniq | tr '\n' '\0' | cut -c1- > /tmp/changed_files
+            | sort | uniq | head -c -1 | tr '\n' '\0' > /tmp/changed_files
           xxd /tmp/changed_files
 
-          git filter-branch --tree-filter "cat /tmp/changed_files | xargs -0 -- echo" -- $CURRENT_BASE..$PR_BRANCH
+          git filter-branch --tree-filter "cat /tmp/changed_files | xargs -0 -- nixpkgs-fmt" -- $CURRENT_BASE..$PR_BRANCH
 
           git push --force
 
