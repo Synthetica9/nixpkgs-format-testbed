@@ -18,7 +18,7 @@ jobs:
       - uses: cachix/install-nix-action@v13
 
       - name: Format
-      - run: |
+        run: |
           NIX_PATH=nixpkgs=https://github.com/nixos/nixpkgs/archive/nixpkgs-unstable.tar.gz \
             nix-env -i nixpkgs-fmt
           mapfile -d ',' -t files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
