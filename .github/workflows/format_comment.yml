@@ -61,7 +61,8 @@ jobs:
             | sort | uniq > /tmp/changed_files
 
           # https://serverfault.com/questions/609886/shell-command-to-filter-out-non-existing-files-in-a-pipe
-          git filter-branch --tree-filter "cat /tmp/changed_files | perl -ne 'chomp(); if (-e \$_) {print \"\$_\\n\"}' | xargs -d '\n' -- nixpkgs-fmt" -- $CURRENT_BASE..$PR_BRANCH
+          FILTER_SCRIPT="cat /tmp/changed_files | perl -ne 'chomp(); if (-e \$_) {print \"\$_\\n\"}' | xargs -d '\n' -- nixpkgs-fmt"
+          git filter-branch --tree-filter "$FILTER_SCRIPT" -- $CURRENT_BASE..$PR_BRANCH
 
           git push --force
 
