@@ -3,6 +3,10 @@ on:
   issue_comment:
     types:
       - created
+
+env:
+  nixpkgs_pin: ff13163e3fd5283d997d11fac04061f243d93f7c
+
 jobs:
   format:
     runs-on: ubuntu-latest
@@ -46,7 +50,7 @@ jobs:
         run: |
           set -euxo pipefail
 
-          nix-env -f 'https://github.com/nixos/nixpkgs/archive/ff13163e3fd5283d997d11fac04061f243d93f7c.tar.gz' -iA nixpkgs-fmt
+          nix-env -f 'https://github.com/nixos/nixpkgs/archive/${{ env.nixpkgs_pin }}.tar.gz' -iA nixpkgs-fmt
 
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
